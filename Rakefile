@@ -13,12 +13,13 @@ task :compile do
       output_filename = "./#{$1}.html"
       File.open(output_filename, 'w') do |f|
         haml_template = File.read(filename)
-        engine = Haml::Engine.new(haml_template, format: :html5)
+        engine = Haml::Engine.new(haml_template)  # No additional arguments
         f.write engine.render
       end
     end
   end
 end
+
 
 
 task :clean do
