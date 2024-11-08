@@ -9,13 +9,17 @@ task default: :compile
 
 task :compile do
   FileList.new('./src/*.html.haml').each do |filename|
-    if filename =~ /([^\/]+)\.haml$/
-      File.open($1, 'w') do |f|
-        f.write Haml::Engine.new(File.read(filename)).render
+    if filename =~ /([^\/]+)\.html\.haml$/
+      output_filename = "./#{$1}.html"
+      File.open(output_filename, 'w') do |f|
+        haml_template = File.read(filename)
+        engine = Haml::Engine.new(haml_template, format: :html5)
+        f.write engine.render
       end
     end
   end
 end
+
 
 task :clean do
   FileUtils.rm_r(Dir.glob("./*.html"), force: true)
